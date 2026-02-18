@@ -26,29 +26,27 @@ const Register = () => {
 
 
 
-    return (
-        <form onSubmit={submit} className="max-w-md mx-auto mt-10 space-y-4">
-            <input
-                placeholder="Name"
-                onChange={(e) => setName(e.target.value)}
-                className="border p-2 w-full"
-            />
-            <input
-                placeholder="Email"
-                onChange={(e) => setEmail(e.target.value)}
-                className="border p-2 w-full"
-            />
-            <input
-                placeholder="Password"
-                type="password"
-                onChange={(e) => setPassword(e.target.value)}
-                className="border p-2 w-full"
-            />
-            <button className="bg-black text-white px-4 py-2">
-                Register
-            </button>
-        </form>
-    );
+return (
+  <div className="min-h-screen w-full flex items-center justify-center bg-[#020617] bg-[radial-gradient(circle_at_bottom,_var(--tw-gradient-stops))] from-cyan-900/20 via-slate-950 to-black px-4">
+    <div className="w-full max-w-md">
+      <form onSubmit={submit} className="bg-slate-900/60 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-[2rem] p-6 sm:p-10 space-y-5">
+        <h2 className="text-xl sm:text-2xl font-black text-center text-white tracking-tight">Create Account</h2>
+        <div className="space-y-3">
+          <input placeholder="Full Name" required onChange={(e) => setName(e.target.value)}
+            className="w-full bg-slate-950/50 border border-white/10 focus:border-cyan-500 outline-none p-3 rounded-xl text-sm text-white transition-all" />
+          <input placeholder="Email" type="email" required onChange={(e) => setEmail(e.target.value)}
+            className="w-full bg-slate-950/50 border border-white/10 focus:border-cyan-500 outline-none p-3 rounded-xl text-sm text-white transition-all" />
+          <input placeholder="Password" type="password" required onChange={(e) => setPassword(e.target.value)}
+            className="w-full bg-slate-950/50 border border-white/10 focus:border-cyan-500 outline-none p-3 rounded-xl text-sm text-white transition-all" />
+        </div>
+        <button className="w-full bg-cyan-600 hover:bg-cyan-500 text-white py-3 rounded-xl font-bold text-sm sm:text-base transition-all active:scale-95">
+          Register Now
+        </button>
+      </form>
+    </div>
+  </div>
+);
+
 };
 
 export default Register;

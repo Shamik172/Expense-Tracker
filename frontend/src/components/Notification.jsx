@@ -40,7 +40,7 @@ export default function NotificationContainer() {
   };
 
   return (
-    <div className="fixed top-5 left-1/2 transform -translate-x-1/2 flex flex-col gap-3 z-50 pointer-events-none">
+    <div className="fixed top-5 left-1/2 transform -translate-x-1/2 flex flex-col gap-3 z-[9999] pointer-events-none">
       {notifications.map((n) => (
         <div
           key={n.id}
