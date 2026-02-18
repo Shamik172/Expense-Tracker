@@ -1,18 +1,26 @@
 import Expense from "../models/Expense.js";
+import mongoose from "mongoose";
 
 export const createExpense = async (req, res) => {
   const { amount, category, description, date } = req.body;
-  const idempotencyKey = req.headers["idempotency-key"] || Date.now().toString();
+  const idempotencyKey =
+    req.headers["idempotency-key"] || Date.now().toString();
 
-  const existing = await Expense.findOne({ idempotencyKey });
+  // check existing expense for same user
+  const existing = await Expense.findOne({
+    idempotencyKey,
+    user: req.user,
+  });
+
   if (existing) return res.status(200).json(existing);
 
   const expense = await Expense.create({
-    amount,
+    amount: mongoose.Types.Decimal128.fromString(amount.toString()),
     category,
     description,
     date,
     idempotencyKey,
+    user: req.user,
   });
 
   res.status(201).json(expense);
@@ -21,16 +29,14 @@ export const createExpense = async (req, res) => {
 export const getExpenses = async (req, res) => {
   const { category, sort } = req.query;
 
-  let query = {};
+  let query = { user: req.user };
 
-  // apply filter only if category exists and not empty
   if (category && category.trim() !== "") {
     query.category = category;
   }
 
   let expensesQuery = Expense.find(query);
 
-  // default sorting newest first
   if (sort === "date_desc" || !sort) {
     expensesQuery = expensesQuery.sort({ date: -1 });
   }
@@ -38,4 +44,3 @@ export const getExpenses = async (req, res) => {
   const expenses = await expensesQuery;
   res.json(expenses);
 };
-

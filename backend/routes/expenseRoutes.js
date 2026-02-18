@@ -4,10 +4,11 @@ import {
   getExpenses,
 } from "../controllers/expenseController.js";
 import { validateExpense } from "../middlewares/validateExpense.js";
+import { protect } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/", validateExpense, createExpense);
-router.get("/", getExpenses);
+router.post("/", protect, validateExpense, createExpense);
+router.get("/", protect, getExpenses);
 
 export default router;

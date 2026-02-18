@@ -5,6 +5,10 @@ const expenseSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.Decimal128,
     required: true,
   },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
   category: String,
   description: String,
   date: Date,
