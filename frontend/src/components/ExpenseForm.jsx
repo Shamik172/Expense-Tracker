@@ -1,5 +1,6 @@
 import { useState } from "react";
 import API from "../api/api";
+import { notify } from "../components/Notification";
 
 const ExpenseForm = ({ setRefresh }) => {
   const [form, setForm] = useState({
@@ -21,7 +22,7 @@ const ExpenseForm = ({ setRefresh }) => {
     }, {
       headers: { "Idempotency-Key": Date.now().toString() }
     });
-
+    notify("Expense added successfully", "success");
     setRefresh(prev => !prev); // trigger list reload
   };
 

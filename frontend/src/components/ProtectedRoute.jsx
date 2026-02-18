@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import API from "../api/api";
+import { notify } from "./Notification";
 
 const ProtectedRoute = ({ children }) => {
   const [auth, setAuth] = useState(null);
@@ -8,7 +9,10 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     API.get("/auth/me")
       .then(() => setAuth(true))
-      .catch(() => setAuth(false));
+      .catch(() => {
+        setAuth(false);
+        notify("Please login to continue", "warning"); // notification
+      });
   }, []);
 
   if (auth === null) return <div>Loading...</div>;
