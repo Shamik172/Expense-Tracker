@@ -22,12 +22,20 @@ export const getExpenses = async (req, res) => {
   const { category, sort } = req.query;
 
   let query = {};
-  if (category) query.category = category;
 
-  let expenses = Expense.find(query);
+  // apply filter only if category exists and not empty
+  if (category && category.trim() !== "") {
+    query.category = category;
+  }
 
-  if (sort === "date_desc") expenses = expenses.sort({ date: -1 });
+  let expensesQuery = Expense.find(query);
 
-  const data = await expenses;
-  res.json(data);
+  // default sorting newest first
+  if (sort === "date_desc" || !sort) {
+    expensesQuery = expensesQuery.sort({ date: -1 });
+  }
+
+  const expenses = await expensesQuery;
+  res.json(expenses);
 };
+

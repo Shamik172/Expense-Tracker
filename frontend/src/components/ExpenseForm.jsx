@@ -1,6 +1,7 @@
 import { useState } from "react";
+import API from "../api/api";
 
-const ExpenseForm = () => {
+const ExpenseForm = ({ setRefresh }) => {
   const [form, setForm] = useState({
     amount: "",
     category: "",
@@ -12,9 +13,16 @@ const ExpenseForm = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(form);
+    await API.post("/expenses", {
+      ...form,
+      amount: Number(form.amount),
+    }, {
+      headers: { "Idempotency-Key": Date.now().toString() }
+    });
+
+    setRefresh(prev => !prev); // trigger list reload
   };
 
   return (
@@ -26,6 +34,7 @@ const ExpenseForm = () => {
 
       <input
         name="amount"
+        type="number"
         placeholder="Amount"
         className="w-full border p-2 rounded"
         onChange={handleChange}
